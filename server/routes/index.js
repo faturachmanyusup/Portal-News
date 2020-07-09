@@ -1,8 +1,10 @@
 const router = require('express').Router()
-const user = require('./user')
-const news = require('./newsRoutes')
+const UserController = require('../controllers/user')
 
-router.use('/', user)
-router.use('/news', user)
+router.post('/register', UserController.register)
+router.post('/login', UserController.login)
+router.post('/googleSignIn', UserController.googleLogin)
+router.get('/currency',UserController.currency)
+
 
 module.exports = router

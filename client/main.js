@@ -136,6 +136,23 @@ function registerForm(event) {
     })
 }
 
+function listNews() {
+    $.ajax({
+        method: ``,
+        url: ``
+    })
+    .done(data => {
+
+    })
+    .fail(err => {
+
+    })
+    .always(() => {
+
+    })
+}
+
+
 function searchNews(event) {
     event.preventDefault()
     $.ajax({
@@ -151,6 +168,19 @@ function searchNews(event) {
     })
     .always(() => {
         
+    })
+}
+
+function converter(event) {
+    event.preventDefault()
+    $.ajax({
+        method: `GET`,
+        url: `http://localhost:3000/currency`,
+        data: {
+            q: $(`#valueCurrency`).val(),
+            from: $(`#fromCurrency`).val(),
+            to: $(`#toCurrency`).val()
+        }
     })
 }
 
@@ -173,7 +203,7 @@ function onSignIn(googleUser) {
 
     $.ajax({
         method: `POST`,
-        url: `http://localhost:3000/users/login/google`,
+        url: `http://localhost:3000/googleSignIn`,
         data: {
             id_token
         }
@@ -195,4 +225,32 @@ function signOut() {
     auth2.signOut().then(function () {
       console.log('User signed out.');
     });
+}
+
+$.getJSON("https://api.fixer.io/latest?base=ZAR", function(data) {
+  var currencies = [];
+  $.each(data.rates, function(currency, rate) {
+    // Currency options dropdown menu
+    currencies.push("<option id='" + currency.toLowerCase() + "' value='" + rate + "' >" + currency + "</option>");
+  });
+  $(".currency-list").append(currencies);
+})
+
+//Calculate and output the new amount
+function exchangeCurrency() {
+  var amount = $(".amount").val();
+  var rateFrom = $(".currency-list")[0].value;
+  var rateTo = $(".currency-list")[1].value;
+  if ((amount - 0) != amount || (''+amount).trim().length == 0) {
+    $(".results").html("0");
+    $(".error").show()
+  } else {
+    $(".error").hide()
+    if (amount == undefined || rateFrom == "--Select--" || rateTo == "--Select--") {
+      $(".results").html("0");
+
+    } else {
+      $(".results").html((amount * (rateTo * (1 / rateFrom))).toFixed(2));
+    }
+  }
 }
