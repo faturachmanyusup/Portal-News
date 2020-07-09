@@ -3,6 +3,7 @@ const { verify } = require('../helpers/jwt')
 const Authentication = (req, res, next) => {
     try {
         let decode = verify(req.headers.access_token)
+        console.log(decode);
         User.findOne({
             where: {
               id: decode.id

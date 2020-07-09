@@ -3,6 +3,6 @@ const user = require('./user')
 const news = require('./newsRoutes')
 
 router.use('/', user)
-router.use('/news', user)
+router.use('/news', news)
 
 module.exports = router
