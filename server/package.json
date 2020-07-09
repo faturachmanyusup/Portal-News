@@ -1,8 +1,14 @@
 {
-  "name": "portal-news",
+  "name": "server",
   "version": "1.0.0",
-  "description": "Group Project P2W1",
+  "description": "",
   "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Afif, Christian, Fatur, Maya",
+  "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
@@ -11,22 +17,10 @@
     "express": "^4.17.1",
     "google-auth-library": "^6.0.3",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.2.2",
+    "mailgun-js": "^0.22.0",
+    "newsapi": "^2.4.0",
+    "nodemon": "^2.0.4",
+    "pg": "^8.3.0",
     "sequelize": "^6.3.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/faturachmanyusup/Portal-News.git"
-  },
-  "keywords": [],
-  "author": "Afif",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/faturachmanyusup/Portal-News/issues"
-  },
-  "homepage": "https://github.com/faturachmanyusup/Portal-News#readme"
+  }
 }
