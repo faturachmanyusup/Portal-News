@@ -31,7 +31,7 @@ class News {
       // console.log(data);
       return data;
     } catch (error) {
-      console.log(error);
+    return error
     }
   }
 
@@ -46,7 +46,7 @@ class News {
       // console.log(data.sources);
       return data.sources;
     } catch (e) {
-      console.log(e);
+      return e
     }
   }
 

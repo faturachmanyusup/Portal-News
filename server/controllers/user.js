@@ -12,7 +12,11 @@ class UserController {
         
         User.create(payload)
         .then(data => {
-            const access_token = generateToken(payload)
+            const access_token = generateToken({
+                id: data.id,
+                email: data.email,
+                name: data.name
+            })
             return res.status(201).json({
                 id: data.id,
                 email: data.email,
