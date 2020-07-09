@@ -32,6 +32,7 @@ function homeAfterLogin() {
     $(`#form-register`).hide()
     $(`#home-before-login`).hide()
     $(`#logout-button`).show()
+    $(`#after-page-search`).hide()
 }
 
 function homeBeforeLogin() {
@@ -46,19 +47,35 @@ function homeBeforeLogin() {
 
 function loginForm(event) {
     event.preventDefault()
+    const email = $(`#loginEmail`).val()
+    const password = $(`#loginPassword`).val()
+    $(`#alertLogin`).empty()
     $.ajax({
         method: `POST`,
-        url: ``,
-        data: ``
+        url: `http://localhost:3000/login`,
+        data: {
+            email: email,
+            password: password
+        }
     })
-    .done(data => {
-
+    .done((result) => {
+        localStorage.access_token = result.access_token
+        homeAfterLogin()
     })
-    .fail(err => {
-
+    .fail((err) => {
+        console.log(err.responseJSON.errors)
+        $(`#alertLogin`).append(`
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ${err.responseJSON.errors[0].message}        
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>`)
     })
-    .always(() => {
-
+    .always( () => {
+        console.log(`tes`)
+        $(`#loginEmail`).val(``)
+        $(`#loginPassword`).val(``)
     })
 }
 
@@ -66,16 +83,19 @@ function registerForm(event) {
     event.preventDefault()
     const email = $(`#registerEmail`).val()
     const password = $(`#registerPassword`).val()
+    const name = $(`#registerName`).val()
     $(`#alertRegister`).empty()
     $.ajax({
         method: `POST`,
-        url: `http://localhost:3000/users/register`,
+        url: `http://localhost:3000/register`,
         data: {
             email: email,
-            password: password
+            password: password,
+            name: name
         }
     })
     .done((result) => {
+        console.log(result)
         $(`#alertRegister`).append(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 successfully registered! Please sign in to surf in our Portal News!        
@@ -85,11 +105,11 @@ function registerForm(event) {
             </div>`)
     })
     .fail((err) => {
-        let errors = err.responseJSON.message
+        let errors = err.responseJSON.errors
         errors.forEach(element => {
             $(`#alertRegister`).append(`
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                ${element}        
+                ${element.message}        
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
