@@ -1,21 +1,40 @@
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI('92bfd907dea3489285abc89fd0f177d1');
 
-async function findNews(search, bahasa) {
-  try {
-    const data = await newsapi.v2.everything({
-      q: search,
-      from: '2020-07-08',
-      to: '2020-07-09',
-      language: bahasa,
-      sortBy: 'relevancy',
-      page: 2,
-    })
-    // console.log(data.articles);
-    return data.articles;
-  } catch (error) {
-    console.log(error); 
+
+class News {
+  static async find(keywords, language) {
+    try {
+      const searchBox = {
+        q: keywords,
+        from: '2020-07-08',
+        to: '2020-07-09',
+        language: language,
+        sortBy: 'relevancy',
+        page: 1,
+      }
+  
+      const data = await newsapi.v2.everything(searchBox);
+      console.log(data.articles);
+      return data.articles;
+    } catch (e) {
+      console.log(e); 
+    }
   }
+  
+  static async category() {
+    try {
+      const data = await newsapi.v2.topHeadlines({
+        language: 'en',
+        country: 'us'
+      })
+      // console.log(data);
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
 }
 
-// findNews('bola', 'id');
+module.exports = News;
