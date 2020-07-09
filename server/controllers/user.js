@@ -6,7 +6,8 @@ class UserController {
         console.log(req.body);
         const payload = {
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            name: req.body.name
         }
         
         User.create(payload)
@@ -15,6 +16,7 @@ class UserController {
             return res.status(201).json({
                 id: data.id,
                 email: data.email,
+                name: data.name,
                 access_token
             })
         })
@@ -36,11 +38,13 @@ class UserController {
                 if(decryptPassword(password, data.password)){
                     const access_token = generateToken({
                         id: data.id,
-                        email: data.email
+                        email: data.email,
+                        name: data.name
                     })
                     return res.status(200).json({
                         id: data.id,
                         email: data.email,
+                        name:data.name,
                         access_token
                     })
                 } else {
