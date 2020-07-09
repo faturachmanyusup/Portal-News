@@ -1,13 +1,19 @@
 
 $(document).ready(function() {
-    // homeBeforeLogin()
-    // homeAfterLogin()
+
+    if (localStorage.access_token) {
+        homeAfterLogin()
+    } else {
+        homeBeforeLogin()
+    }
     // loginPage()
     // registerPage()
 })
 
 
 function loginPage() {
+    $(`#loginEmail`).val(``)
+    $(`#loginPassword`).val(``)
     $(`#form-login`).show()
     $(`#home-before-login`).hide()
     $(`#form-register`).hide()
@@ -23,6 +29,9 @@ function registerPage() {
     $(`#logout-button`).hide()
     $(`#home-after-login`).hide()
     $(`#login-button`).show()
+    $(`#registerEmail`).val(``)
+    $(`#registerPassword`).val(``)
+    $(`#registerName`).val(``)
 }
 
 function homeAfterLogin() {
@@ -33,6 +42,8 @@ function homeAfterLogin() {
     $(`#home-before-login`).hide()
     $(`#logout-button`).show()
     $(`#after-page-search`).hide()
+    $(`#searchEngine`).val(``)
+    $(`#language`).val(`select language`)
 }
 
 function homeBeforeLogin() {
@@ -42,6 +53,7 @@ function homeBeforeLogin() {
     $(`#home-after-login`).hide()
     $(`#home-before-login`).show()
     $(`#login-button`).show()
+    $(`#after-page-search`).hide()
 }
 
 
@@ -120,6 +132,7 @@ function registerForm(event) {
         console.log(`tes`)
         $(`#registerEmail`).val(``)
         $(`#registerPassword`).val(``)
+        $(`#registerName`).val(``)
     })
 }
 
@@ -142,7 +155,9 @@ function searchNews(event) {
 }
 
 function logoutButton() {
+    localStorage.clear()
     homeBeforeLogin()
+    signOut()
 }
 
 function loginButton() {
@@ -153,4 +168,31 @@ function registerButton() {
     registerPage()
 }
 
+function onSignIn(googleUser) {
+    let id_token = googleUser.getAuthResponse().id_token;
 
+    $.ajax({
+        method: `POST`,
+        url: `http://localhost:3000/users/login/google`,
+        data: {
+            id_token
+        }
+    })
+    .done((result) => {
+        localStorage.setItem(`access_token`, result.access_token)
+        homeAfterLogin()
+    })
+    .fail((err) => {
+        console.log(err)
+    })
+    .always(() => {
+
+    })
+}
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+}

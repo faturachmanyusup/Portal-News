@@ -1,6 +1,8 @@
 const { User } = require('../models')
 const { generateToken } = require('../helpers/jwt')
 const { decryptPassword } = require('../helpers/bcrypt')
+const sendEmail = require(`../helpers/mailgun`)
+
 class UserController {
     static register(req, res, next) {
         console.log(req.body);
@@ -12,6 +14,9 @@ class UserController {
         
         User.create(payload)
         .then(data => {
+            let subject = `Successfully Registered to Portal News!`
+            let text = `Welcome ${data.email} to Portal News!\nWe hope to be your best buddy in terms of your source choice for everything happens around you.\nHave a good day!\n\nCheers,\nPortal News!`
+            sendEmail(data.email, subject, text)
             return res.status(201).json(data)
         })
         .catch(err=> {
@@ -35,6 +40,9 @@ class UserController {
                         email: data.email,
                         name: data.name
                     })
+                    let subject = `Successfully Sign in to Portal News!`
+                    let text = `Welcome ${data.email} to Portal News!\nHappy reading!\n\nCheers,\nPortal News!`
+                    sendEmail(data.email, subject, text)
                     return res.status(200).json({
                         id: data.id,
                         email: data.email,

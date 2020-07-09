@@ -24,7 +24,3 @@ async function sendEmail(receiver,subject,text) {
 module.exports = sendEmail
 
 // usage:
-// const sendEmail = require(`../helpers/mailgun`)
-// let subject = `Successfully Registered to Portal News!`
-// let text = `Welcome ${data.email} to Portal News!\n We hope, we can be your best buddy in terms of your source choice for everything happens around you.\n Have a good day!\n\n Cheers.`
-// sendEmail(data.email, subject, text)
