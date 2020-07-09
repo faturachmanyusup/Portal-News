@@ -2,30 +2,12 @@ const { User } = require('../models')
 const { generateToken } = require('../helpers/jwt')
 const { decryptPassword } = require('../helpers/bcrypt')
 class UserController {
-    static register(req, res, next) {
-        console.log(req.body);
-        const payload = {
-            email: req.body.email,
-            password: req.body.password,
-            name: req.body.name
-        }
-        
+    static register(req, res, next) {        
         User.create(payload)
         .then(data => {
-            const access_token = generateToken({
-                id: data.id,
-                email: data.email,
-                name: data.name
-            })
-            return res.status(201).json({
-                id: data.id,
-                email: data.email,
-                name: data.name,
-                access_token
-            })
+            return res.status(201).json(data)
         })
         .catch(err=> {
-            console.log((err));
             next (err)
         })
     }
