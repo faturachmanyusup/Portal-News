@@ -54,6 +54,6 @@ class News {
 
 // News.category('technology', 'en');
 // News.topHeadlines('id')
-// News.find('bola')
+// News.find('bola', 'id')
 
 module.exports = News;
