@@ -12,14 +12,16 @@ POST /register : Create new user
 
 - Request Body
 
+```json
     {
         "name": "<user's name>"
         "email": "<user's email>",
         "password": "<user's password>"
     }
+ ```
 
 - Response 201: Created
-
+```json
     {
         "id": <given id by system>,
         "email": "<posted user's email>",
@@ -28,9 +30,10 @@ POST /register : Create new user
         "createdAt": "<date given by system>",
         "updatedAt": "<date given by system>"
     }
+```
 
 - Response 400: Bad Request
-
+```json
     {
         "type": "Bad Request",
         "errors": [
@@ -45,12 +48,14 @@ POST /register : Create new user
             }
         ]
     }
+```
 
 - Response 500: Internal server error
-
+```json
     {
         type: "Internal Server Error", <show error>
     }
+```
 
 POST /login : login to user's account
 
@@ -58,22 +63,25 @@ POST /login : login to user's account
     Not required.
 
 - Request Body
+```json
     {
         "email": "<user's email>",
         "password": "<user's password>"
     }
+```
 
 - Response 200: OK
-
+```json
     {
         "id": <user's id>,
         "email": "<user's email>",
         "name": "<user's name>",
         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXlhbmFAZW1haWwuY29tIiwibmFtZSI6Im1heWEiLCJpYXQiOjE1OTQzNjQxNTB9.RgwDwM4MYu5_6x1nQrJ_CKj44-WkR32ZM6_dBZItp9w"
     }
+```
 
 - Response 400: Bad Request
-
+```json
     {
         "errors": [
                     {
@@ -81,12 +89,14 @@ POST /login : login to user's account
                     }
                 ]
     }
+```
 
 - Response 500: Internal server error
-
+```json
     {
         type: "Internal Server Error", <show error>
     }
+```
 
 POST /login/google : login to user's account through third-party API (google)
 
@@ -94,20 +104,22 @@ POST /login/google : login to user's account through third-party API (google)
     Not required.
 
 - Request Body
-
+```json
     {
         "email": "<user's email>",
         "password": "<user's password>"
     }
+```
 
 - Response 200: OK
-
+```json
     {
         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXlhbmFAZW1haWwuY29tIiwibmFtZSI6Im1heWEiLCJpYXQiOjE1OTQzNjQxNTB9.RgwDwM4MYu5_6x1nQrJ_CKj44-WkR32ZM6_dBZItp9w"
     }
+```
 
 - Response 400: Bad Request
-
+```json
     {
         "errors": [
                     {
@@ -115,37 +127,42 @@ POST /login/google : login to user's account through third-party API (google)
                     }
                 ]
     }
+```
 
 - Response 500: Internal server error
-
+```json
     {
         type: "Internal Server Error", <show error>
     }
-
+```
 
 POST /currency : hit Currency API to generate Currency request on Client Side
 
 - Request Header
+```json
     {
         "access_token":"<access token>"
     }
-
+```
 - Request Body
-
+```json
     {
         from: <input Initial currency>,
         to: <input Comparison currency>
     }
+```
 
 - Response 200: OK
 
     <Currency result>
 
 - Response 500: Internal server error
-
+```json
     {
         type: "Internal Server Error", <show error>
     }
+```
+
 
 ## News Routes
 
@@ -154,20 +171,22 @@ POST /news/search
 Find all news based on search parameters
 
 - Request Header:
-
+```json
    {
       "access_token": "<your access token>"
    }
+```
 
 - Request Body:
-
+```json
    {
       "keywords": "<keywords to get insert into>",
       "languages": "<language to get insert into>"
    }
+```
 
 - Response (200 - OK):
-
+```json
     {
         "status": "ok",
         "totalResults": 2205,
@@ -200,13 +219,15 @@ Find all news based on search parameters
             },
         ]
     }
+```
 
 - Response (400 - Bad Request):
-
+```json
     {
         "name": "NewsAPIError: parametersMissing",
         "message": "Required parameters are missing, the scope of your search is too broad. Please set any of the following required parameters and try again: q, qInTitle, sources, domains."
     }
+```
 
 
 GET /news/:country
@@ -214,10 +235,11 @@ GET /news/:country
 Get Top Headline News based on Country choosen in request params
 
 - Request Header:
-
+```json
    {
       "access_token": "<your access token>"
    }
+```
 
 - Request Body:
 
@@ -228,7 +250,7 @@ Get Top Headline News based on Country choosen in request params
     "country"
    
 - Response (200 - OK):
-
+```json
     [
         {
             "source": {
@@ -257,3 +279,4 @@ Get Top Headline News based on Country choosen in request params
             "content": "Nationalgeographic.co.id – Dalam realita, perlu berapa banyak orang agar bisa bertahan hidup di Mars? Menurut model matematika terbaru, jumlah minimalnya 110 individu.\r\nDilansir dari IFL Science, Jea… [+2522 chars]"
         }
     ]
+```
