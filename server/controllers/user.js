@@ -6,15 +6,13 @@ const {OAuth2Client} = require('google-auth-library');
 const axios = require('axios')
 
 class UserController {
-    static register(req, res, next) {
-        console.log(req.body);
-        const payload = {
-            email: req.body.email,
+    static register(req, res, next) {    
+        let newUser = {
             password: req.body.password,
-            name: req.body.name
-        }
-        
-        User.create(payload)
+            email: req.body.email,
+            name:req.body.name,
+        }    
+        User.create(newUser)
         .then(data => {
             let subject = `Successfully Registered to Portal News!`
             let text = `Welcome ${data.email} to Portal News!\nWe hope to be your best buddy in terms of your source choice for everything happens around you.\nHave a good day!\n\nCheers,\nPortal News!`
@@ -22,7 +20,6 @@ class UserController {
             return res.status(201).json(data)
         })
         .catch(err=> {
-            console.log((err));
             next (err)
         })
     }
@@ -104,19 +101,17 @@ class UserController {
         })
         .then(data => {
             const token = generateToken({ id: data.id, email: data.email})
-            // let subject = `Successfully Sign in to Portal News!`
-            // let text = `Welcome ${data.email} to Portal News!\nHappy reading!\n\nCheers,\nPortal News!`
-            // sendEmail(data.email, subject, text)
+            let subject = `Successfully Sign in to Portal News!`
+            let text = `Welcome ${data.email} to Portal News!\nHappy reading!\n\nCheers,\nPortal News!`
+            sendEmail(data.email, subject, text)
             return res.status(200).json({access_token: token})
         })
         .catch(function(err){
-            console.log(err)
             return res.status(500).json('Internal Server Error')
         })
     }
 
     static currency (req, res) {
-        console.log(req.body)
         axios({
             method:"GET",
             url:"https://currency-exchange.p.rapidapi.com/exchange",
@@ -127,16 +122,16 @@ class UserController {
                 "useQueryString":true
             },
             params:{
-                q:req.body.q,
+                q:1,
                 from:req.body.from,
                 to:req.body.to
             }
         })
         .then((response)=>{
-            return res.status(201).json(response.data)
+            return res.status(200).json(response.data)
         })
         .catch((error)=>{
-            console.log(error)
+            // console.log(error)
             return res.status(500).json("Internal Server Error")
         })
     }

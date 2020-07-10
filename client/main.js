@@ -35,6 +35,7 @@ function registerPage() {
 }
 
 function homeAfterLogin() {
+    listNews()
     $(`#home-after-login`).show()
     $(`#login-button`).hide()
     $(`#form-login`).hide()
@@ -44,6 +45,9 @@ function homeAfterLogin() {
     $(`#after-page-search`).hide()
     $(`#searchEngine`).val(``)
     $(`#language`).val(`select language`)
+    $(`.results`).empty()
+    $(`#fromCurrency`).val(`select`)
+    $(`#toCurrency`).val(`select`)
 }
 
 function homeBeforeLogin() {
@@ -117,6 +121,7 @@ function registerForm(event) {
             </div>`)
     })
     .fail((err) => {
+        // console.log(err)
         let errors = err.responseJSON.errors
         errors.forEach(element => {
             $(`#alertRegister`).append(`
@@ -138,49 +143,158 @@ function registerForm(event) {
 
 function listNews() {
     $.ajax({
-        method: ``,
-        url: ``
+        method: `GET`,
+        url: `http://localhost:3000/news/us`,
+        headers: {
+            access_token: localStorage.access_token    
+        }
     })
     .done(data => {
-
+        console.log(data)    
+        if (data.totalResults == 0) {
+            $(`#news-page`).text(`We are apologize, currently we can't find any news for you. Please try again later.`)
+        }
+        data.forEach(element => {
+            if (element.content != null) {
+                $(`#news-page`).append(`
+                <div class="card mb-3">
+                    <img src="${element.urlToImage}" class="card-img-top" alt="news-image.jpg">
+                    <div class="card-body">
+                    <h5 class="card-title font-weight-bold">${element.title}</h5>
+                    <p class="card-text">${element.content}</p>
+                    <p>source: <span>${element.source.name}</span> <a target="_blank" href="${element.url}">${element.url}</a></p>
+                    <p class="card-text"><small class="text-muted">published at ${new Date(element.publishedAt).toDateString()}</small></p>
+                    </div>
+                </div>
+                `)    
+            }
+        });
     })
     .fail(err => {
-
+        console.log(err)
     })
     .always(() => {
+    })
+}
 
+function listNewsSearch(event) {
+    event.preventDefault()
+    console.log($(`#source`).val())
+    $(`#news-page`).empty()
+    $.ajax({
+        method: `GET`,
+        url: `http://localhost:3000/news/${$(`#source`).val()}`,
+        headers: {
+            access_token: localStorage.access_token    
+        }
+    })
+    .done(data => {
+        console.log(data)    
+        if (data.totalResults == 0) {
+            $(`#news-page`).text(`We are apologize, currently we can't find any news for you. Please try again later.`)
+        }
+        data.forEach(element => {
+            if (element.content !== null) {
+                $(`#news-page`).append(`
+                <div class="card mb-3">
+                    <img src="${element.urlToImage}" class="card-img-top" alt="news-image.jpg">
+                    <div class="card-body">
+                    <h5 class="card-title font-weight-bold">${element.title}</h5>
+                    <p class="card-text">${element.content}</p>
+                    <p>source: <span>${element.source.name}</span> <a target="_blank" href="${element.url}">${element.url}</a></p>
+                    <p class="card-text"><small class="text-muted">published at ${new Date(element.publishedAt).toDateString()}</small></p>
+                    </div>
+                </div>
+                `)    
+            }
+        });
+    })
+    .fail(err => {
+        console.log(err)
+    })
+    .always(() => {
     })
 }
 
 
 function searchNews(event) {
     event.preventDefault()
+    console.log($(`#searchEngine`).val())
+    console.log($(`#language`).val())
+    $(`#before-page-search`).hide()
+    $(`#after-page-search`).show()
+    $(`#news-search`).empty()
+    $(`#searchAlert`).empty()
     $.ajax({
         method: `POST`,
-        url: ``,
-        data: ``
+        url: `http://localhost:3000/news/search`,
+        headers: {
+            access_token: localStorage.access_token    
+        },
+        data: {
+            keywords: $(`#searchEngine`).val(),
+            language: $(`#language`).val()  
+        }
     })
     .done(data => {
-
+        if ($(`#searchEngine`).val().length == 0) {
+            $(`#news-search`).append(`Sorry, we can't find any news with keywords: "${$(`#searchEngine`).val()}"`)
+        } else {
+            if(data.totalResults != 0 || data.articles == undefined) {
+                data.articles.forEach(element => {
+                    if (element.content !== null) {
+                        $(`#news-search`).append(`
+                        <div class="card mb-3">
+                        <img src="${element.urlToImage}" class="card-img-top" alt="news-image.jpg">
+                        <div class="card-body">
+                        <h5 class="card-title font-weight-bold">${element.title}</h5>
+                        <p class="card-text">${element.content}</p>
+                        <p>source: <span>${element.source.name}</span> <a target="_blank" href="${element.url}">${element.url}</a></p>
+                        <p class="card-text"><small class="text-muted">published at ${new Date(element.publishedAt).toDateString()}</small></p>
+                        </div>
+                        </div>
+                        `)
+                    }
+                });
+            } else {
+                $(`#news-search`).append(`Sorry, we can't find any news with keywords: "${$(`#searchEngine`).val()}"`)
+            }
+        }
     })
     .fail(err => {
-
+        console.log(err)
     })
     .always(() => {
-        
+        $(`#searchEngine`).val(``)
+        $(`#language`).val(`select language`)
     })
 }
 
 function converter(event) {
     event.preventDefault()
+    console.log($(`#fromCurrency`).val())
+    console.log($(`#toCurrency`).val())
+    $(`.results`).empty()
     $.ajax({
-        method: `GET`,
+        method: `POST`,
         url: `http://localhost:3000/currency`,
         data: {
-            q: $(`#valueCurrency`).val(),
             from: $(`#fromCurrency`).val(),
             to: $(`#toCurrency`).val()
+        },
+        headers: {
+            access_token: localStorage.access_token    
         }
+    })
+    .done(data => {
+        console.log(data)
+        $(`.results`).append(`Result: ${data.toLocaleString('id-ID', { style: 'currency', currency: `${$(`#toCurrency`).val()}` }) }`)
+    })
+    .fail(err => {
+        console.log(err)
+    })
+    .always(() => {
+
     })
 }
 
@@ -227,30 +341,30 @@ function signOut() {
     });
 }
 
-$.getJSON("https://api.fixer.io/latest?base=ZAR", function(data) {
-  var currencies = [];
-  $.each(data.rates, function(currency, rate) {
-    // Currency options dropdown menu
-    currencies.push("<option id='" + currency.toLowerCase() + "' value='" + rate + "' >" + currency + "</option>");
-  });
-  $(".currency-list").append(currencies);
-})
+// $.getJSON("https://api.fixer.io/latest?base=ZAR", function(data) {
+//   var currencies = [];
+//   $.each(data.rates, function(currency, rate) {
+//     // Currency options dropdown menu
+//     currencies.push("<option id='" + currency.toLowerCase() + "' value='" + rate + "' >" + currency + "</option>");
+//   });
+//   $(".currency-list").append(currencies);
+// })
 
 //Calculate and output the new amount
-function exchangeCurrency() {
-  var amount = $(".amount").val();
-  var rateFrom = $(".currency-list")[0].value;
-  var rateTo = $(".currency-list")[1].value;
-  if ((amount - 0) != amount || (''+amount).trim().length == 0) {
-    $(".results").html("0");
-    $(".error").show()
-  } else {
-    $(".error").hide()
-    if (amount == undefined || rateFrom == "--Select--" || rateTo == "--Select--") {
-      $(".results").html("0");
+// function exchangeCurrency() {
+//   var amount = $(".amount").val();
+//   var rateFrom = $(".currency-list")[0].value;
+//   var rateTo = $(".currency-list")[1].value;
+//   if ((amount - 0) != amount || (''+amount).trim().length == 0) {
+//     $(".results").html("0");
+//     $(".error").show()
+//   } else {
+//     $(".error").hide()
+//     if (amount == undefined || rateFrom == "--Select--" || rateTo == "--Select--") {
+//       $(".results").html("0");
 
-    } else {
-      $(".results").html((amount * (rateTo * (1 / rateFrom))).toFixed(2));
-    }
-  }
-}
+//     } else {
+//       $(".results").html((amount * (rateTo * (1 / rateFrom))).toFixed(2));
+//     }
+//   }
+// }
