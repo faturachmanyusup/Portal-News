@@ -1,10 +1,22 @@
 const { User } = require('../models')
 const { generateToken } = require('../helpers/jwt')
 const { decryptPassword } = require('../helpers/bcrypt')
+const sendEmail = require(`../helpers/mailgun`)
+const {OAuth2Client} = require('google-auth-library');
+const axios = require('axios')
+
 class UserController {
-    static register(req, res, next) {        
-        User.create(payload)
+    static register(req, res, next) {    
+        let newUser = {
+            password: req.body.password,
+            email: req.body.email,
+            name:req.body.name,
+        }    
+        User.create(newUser)
         .then(data => {
+            let subject = `Successfully Registered to Portal News!`
+            let text = `Welcome ${data.email} to Portal News!\nWe hope to be your best buddy in terms of your source choice for everything happens around you.\nHave a good day!\n\nCheers,\nPortal News!`
+            sendEmail(data.email, subject, text)
             return res.status(201).json(data)
         })
         .catch(err=> {
@@ -27,6 +39,9 @@ class UserController {
                         email: data.email,
                         name: data.name
                     })
+                    let subject = `Successfully Sign in to Portal News!`
+                    let text = `Welcome ${data.email} to Portal News!\nHappy reading!\n\nCheers,\nPortal News!`
+                    sendEmail(data.email, subject, text)
                     return res.status(200).json({
                         id: data.id,
                         email: data.email,
@@ -52,6 +67,72 @@ class UserController {
         })
         .catch(err => {
             next (err)
+        })
+    }
+
+    static googleLogin (req,res) {
+        const id_token = req.body.id_token
+        const client = new OAuth2Client(process.env.CLIENT_ID)
+        let payload = null
+        client.verifyIdToken({
+            idToken: id_token,
+            audience: process.env.CLIENT_ID
+        })
+        .then(ticket => {
+            // console.log(ticket)
+            payload = ticket.getPayload();
+            const userid = payload['sub'];
+            return User.findOne({
+                where: 
+                {email: payload.email}
+            })
+        })
+        .then(user => {
+            if(user) {
+                return user
+            } else {
+                let dataUser = {
+                    name: payload.name,
+                    email: payload.email,
+                    password: "password123"
+                }
+                return User.create(dataUser)
+            }
+        })
+        .then(data => {
+            const token = generateToken({ id: data.id, email: data.email})
+            let subject = `Successfully Sign in to Portal News!`
+            let text = `Welcome ${data.email} to Portal News!\nHappy reading!\n\nCheers,\nPortal News!`
+            sendEmail(data.email, subject, text)
+            return res.status(200).json({access_token: token})
+        })
+        .catch(function(err){
+            return res.status(500).json('Internal Server Error')
+        })
+    }
+
+    static currency (req, res) {
+        axios({
+            method:"GET",
+            url:"https://currency-exchange.p.rapidapi.com/exchange",
+            headers:{
+                "content-type":"application/octet-stream",
+                "x-rapidapi-host":"currency-exchange.p.rapidapi.com",
+                "x-rapidapi-key":"c6534378c0msh1be906041d04804p1e54d6jsn77673b7b484b",
+                "useQueryString":true
+            },
+            params:{
+                q:1,
+                from:req.body.from,
+                to:req.body.to
+            }
+        })
+        .then((response)=>{
+            return res.status(200).json(response.data)
+        })
+        .catch((error)=>{
+            // console.log(error)
+            return res.status(500).json("Internal Server Error")
         })
     }
 }

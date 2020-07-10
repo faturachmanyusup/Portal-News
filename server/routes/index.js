@@ -1,8 +1,14 @@
 const router = require('express').Router()
-const user = require('./user')
-const news = require('./newsRoutes')
+const UserController = require('../controllers/user')
+const news = require(`./newsRoutes`)
+const Authentication = require('../middlewares/authenthication')
 
-router.use('/', user)
-router.use('/news', news)
+router.post('/register', UserController.register)
+router.post('/login', UserController.login)
+router.post('/googleSignIn', UserController.googleLogin)
+router.use(Authentication)
+router.post('/currency',UserController.currency)
+router.use('/news', news) 
 
-module.exports = router
+
+module.exports = router 

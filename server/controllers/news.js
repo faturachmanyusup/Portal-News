@@ -13,7 +13,7 @@ class NewsController {
     }
     static search (req, res, next) {
 
-        const { keywords, language } = req.query
+        const { keywords, language } = req.body
 
         News.find(keywords,language)
         .then(data => {
