@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id" content="720801184011-udt368v81e32tg84ia4tt26c8hq3tk6h.apps.googleusercontent.com">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Portal News</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand"><b>Portal News</b></a>
+        <a id="logout-button" role="button" onclick="logoutButton()" class="btn btn-outline-danger my-2 my-sm-0 text-light font-weight-bold">Sign out</a>
+        <span id="login-button" class="text-light font-weight-bold">Already a user? Go &nbsp;<a onclick="loginButton()" role="button" class="font-weight-bold btn btn-outline-info my-2 my-sm-0">Sign in</a></span>
+    </nav>
+    <!-- before login -->
+    <div id="home-before-login" style="margin: 200px 0px;">
+        <h1 style="text-align: center;">Welcome to Portal News!</h1>
+        <p style="text-align: center;">your best source choice for everything that happens around you.</p>
+        <div class="mx-auto" style="width: 250px;">
+            <a onclick="loginButton()" role="button" class="btn btn-info btn-lg font-weight-bold text-light rounded-pill">Sign in</a>&nbsp&nbsp;
+            <a onclick="registerPage()" role="button" class="btn btn-outline-dark btn-lg font-weight-bold rounded-pill"><b>Sign up</b></a>
+        </div>
+    </div> 
+
+    <div id="form-login" class="container-md text-light pt-3 mt-3 mb-5">
+        <div class="row">
+            <div class="col bg-secondary p-4 rounded-lg">
+                <h2 style="text-align: center;">Login Page</h2>
+                <br>
+                <div id="alertLogin"></div>
+                <form onsubmit="loginForm(event)">
+                    <div class="form-group">
+                        <label for="loginEmail"><b>Email address</b></label>
+                        <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword"><b>Password</b></label>
+                        <input type="password" class="form-control" id="loginPassword">
+                    </div>
+                    <button type="submit" class="btn btn-info my-2 my-sm-0 font-weight-bold rounded-pill">Sign in</button>
+                </form>
+                <br>
+                <b>or sign in through:</b><br><br>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <br>
+                <p><b>New user? Go register yourself here.</b> <a role="button" class="btn btn-outline-dark btn-sm rounded-pill font-weight-bold" onclick="registerPage()">Sign up</a></p>
+            </div>
+            <div class="col">
+            </div>
+          </div>
+    </div>
+
+    <div id="form-register" class="container-md text-light pt-5 mt-3">
+        <div class="row">
+            <div class="col bg-dark p-4 rounded-lg">
+                <h2 style="text-align: center;">Register Page</h2>
+                <div id="alertRegister"></div>
+                <form onsubmit="registerForm(event)">
+                    <div class="form-group">
+                      <label for="registerName"><b>Your Name</b></label>
+                      <input type="text" class="form-control" id="registerName">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail"><b>Email address</b></label>
+                        <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp">
+                        <small id="emailhelp" class="form-text">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword"><b>Password</b></label>
+                        <input type="password" class="form-control" id="registerPassword">
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary my-2 my-sm-0 font-weight-bold rounded-pill">Register</button>
+                </form>
+                <br>
+                <p><b>Already a user? Sign in here.</b> <a class="btn btn-info btn-sm font-weight-bold rounded-pill" role="button" onclick="loginButton()">Sign In</a></p>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    
+    <!-- after login -->
+    <div id="home-after-login">
+      <div class="row">
+        <div class="col-sm-8 px-5 my-5">
+          <div id="before-page-search">
+            <h1>What's happening recently?</h1>
+            <br>
+            <form onsubmit="listNewsSearch(event)">
+              <label for="">Source:</label>
+              <select name="language" id="source">
+                <option value="us" selected>US</option>
+                <option value="id">Indonesia</option>
+                <option value="in">India</option>
+              </select>
+              &nbsp;<button class="btn btn-outline-dark font-weight-bold rounded-pill btn-sm" type="submit">Search</button>
+            </form>
+            <br>
+            <br>
+            <div id="news-page"></div>
+          </div>
+          <div id="after-page-search">
+            <div class="mx-5 my-5">
+              <a href="" class="text-lg">< Back to home</a>
+              <h1>Search result:</h1>
+              <br>
+              <div id="news-search"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 px-5 my-5">
+          <h5>What do you want to search?</h5>
+          <form onsubmit="searchNews(event)" class="form my-2 my-lg-0 bg-dark px-3 py-3 rounded text-light">
+            <label for="">Keywords:</label>
+            <input id="searchEngine" class="form-control sm" type="text" placeholder="e.g: Corona's victim">
+            <br><br>
+            <label for="">Language:</label>
+            <select name="language" id="language">
+              <option value="select language" selected disabled>---select language---</option>
+              <option value="id">Indonesia</option>
+              <option value="en">English</option>
+            </select>
+            <br><br><button class="btn btn-info font-weight-bold rounded-pill my-2 my-sm-0" type="submit">Search</button>
+          </form>
+
+          <div class="container">
+            <div class="row">
+              <div class="col mt-5 bg-secondary p-3 text-light font-weight-bold rounded">
+                <div class="panel panel-primary text-center">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">Today Currency</h4>
+                  </div>
+                  <div class="panel-body">
+                    <form onsubmit="converter(event)" class="form-vertical">
+          
+                      <p>Value of Money: 1</p>
+                      <div class="form-group inline-block">
+                        <label for="">From currency:</label>
+                        <select id="fromCurrency" class="currency-list form-control">
+                          <option value="select" disabled>--Select--</option>
+                          <option value="USD">USD</option>
+                          <option value="IDR">IDR</option>
+                          <option value="JPY">JPY</option>
+                          <option value="EUR">EUR</option>
+                        </select>
+                      </div>
+          
+                      <div class="form-group inline-block">
+                        <label>To currency:</label>
+                        <select id="toCurrency" class="currency-list form-control">
+                          <option value="select" disabled>--Select--</option>
+                          <option value="USD">USD</option>
+                          <option value="IDR">IDR</option>
+                          <option value="JPY">JPY</option>
+                          <option value="EUR">EUR</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-info font-weight-bold rounded-pill my-2 my-sm-0">Submit</button>
+                    </form>
+                    <br>
+                   <p class="results"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>  
+          </div>          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
