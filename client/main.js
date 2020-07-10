@@ -317,7 +317,7 @@ function onSignIn(googleUser) {
 
     $.ajax({
         method: `POST`,
-        url: `http://localhost:3000/googleSignIn`,
+        url: `http://localhost:3000/login/google`,
         data: {
             id_token
         }
