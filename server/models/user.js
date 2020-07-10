@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          message: 'Username Required.'
+          msg: 'Username Required.'
         },
         notNull: {
           args: true,

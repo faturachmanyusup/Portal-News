@@ -70,7 +70,7 @@ class UserController {
         })
     }
 
-    static googleLogin (req,res) {
+    static googleLogin (req,res, next) {
         const id_token = req.body.id_token
         const client = new OAuth2Client(process.env.CLIENT_ID)
         let payload = null
@@ -107,11 +107,11 @@ class UserController {
             return res.status(200).json({access_token: token})
         })
         .catch(function(err){
-            return res.status(500).json('Internal Server Error')
+            next(err)
         })
     }
 
-    static currency (req, res) {
+    static currency (req, res, next) {
         axios({
             method:"GET",
             url:"https://currency-exchange.p.rapidapi.com/exchange",
@@ -132,7 +132,7 @@ class UserController {
         })
         .catch((error)=>{
             // console.log(error)
-            return res.status(500).json("Internal Server Error")
+            next(error) 
         })
     }
 }

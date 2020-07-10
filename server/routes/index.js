@@ -5,7 +5,7 @@ const Authentication = require('../middlewares/authenthication')
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
-router.post('/googleSignIn', UserController.googleLogin)
+router.post('/login/google', UserController.googleLogin)
 router.use(Authentication)
 router.post('/currency',UserController.currency)
 router.use('/news', news) 
