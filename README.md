@@ -23,7 +23,7 @@ POST /register : Create new user
 - Response 201: Created
 ```json
     {
-        "id": <given id by system>,
+        "id": "<given id by system>",
         "email": "<posted user's email>",
         "name": "<posted user's name>",
         "password": "<posted user's password>",
