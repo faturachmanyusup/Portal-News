@@ -53,7 +53,7 @@ POST /register : Create new user
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error", <show error>
+        type: "Internal Server Error",
     }
 ```
 
@@ -73,7 +73,7 @@ POST /login : login to user's account
 - Response 200: OK
 ```json
     {
-        "id": <user's id>,
+        "id": "<user's id>",
         "email": "<user's email>",
         "name": "<user's name>",
         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXlhbmFAZW1haWwuY29tIiwibmFtZSI6Im1heWEiLCJpYXQiOjE1OTQzNjQxNTB9.RgwDwM4MYu5_6x1nQrJ_CKj44-WkR32ZM6_dBZItp9w"
@@ -94,7 +94,7 @@ POST /login : login to user's account
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error", <show error>
+        type: "Internal Server Error",
     }
 ```
 
@@ -141,14 +141,14 @@ POST /currency : hit Currency API to generate Currency request on Client Side
 - Request Header
 ```json
     {
-        "access_token":"<access token>"
+        "access_token": "<access token>"
     }
 ```
 - Request Body
 ```json
     {
-        from: <input Initial currency>,
-        to: <input Comparison currency>
+        from: "<input Initial currency>",
+        to: "<output Comparison currency>"
     }
 ```
 
@@ -159,7 +159,7 @@ POST /currency : hit Currency API to generate Currency request on Client Side
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error", <show error>
+        type: "Internal Server Error",
     }
 ```
 
