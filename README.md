@@ -132,7 +132,7 @@ POST /login/google : login to user's account through third-party API (google)
 - Response 500: Internal server error
 ```json
     {
-        "type": "Internal Server Error", <show error>
+        "type": "Internal Server Error",
     }
 ```
 
@@ -251,9 +251,7 @@ Get Top Headline News based on Country choosen in request params
    
 - Response (200 - OK):
 ```json
-    [<input Initial currency>",
-151
-        to: "<o
+    "data": "[
         {
             "source": {
                 "id": null,
@@ -280,5 +278,5 @@ Get Top Headline News based on Country choosen in request params
             "publishedAt": "2020-07-10T06:30:00Z",
             "content": "Nationalgeographic.co.id – Dalam realita, perlu berapa banyak orang agar bisa bertahan hidup di Mars? Menurut model matematika terbaru, jumlah minimalnya 110 individu.\r\nDilansir dari IFL Science, Jea… [+2522 chars]"
         }
-    ]
+    ]"
 ```
