@@ -53,7 +53,7 @@ POST /register : Create new user
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error",
+        "type": "Internal Server Error",
     }
 ```
 
@@ -94,7 +94,7 @@ POST /login : login to user's account
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error",
+        "type": "Internal Server Error",
     }
 ```
 
@@ -147,8 +147,8 @@ POST /currency : hit Currency API to generate Currency request on Client Side
 - Request Body
 ```json
     {
-        from: "<input Initial currency>",
-        to: "<output Comparison currency>"
+        "from": "<input Initial currency>",
+        "to": "<output Comparison currency>"
     }
 ```
 
@@ -251,7 +251,9 @@ Get Top Headline News based on Country choosen in request params
    
 - Response (200 - OK):
 ```json
-    [
+    [<input Initial currency>",
+151
+        to: "<o
         {
             "source": {
                 "id": null,
