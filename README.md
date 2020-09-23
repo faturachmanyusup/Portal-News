@@ -14,7 +14,7 @@ POST /register : Create new user
 
 ```json
     {
-        "name": "<user's name>"
+        "name": "<user's name>",
         "email": "<user's email>",
         "password": "<user's password>"
     }
