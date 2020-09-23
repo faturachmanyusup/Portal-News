@@ -132,7 +132,7 @@ POST /login/google : login to user's account through third-party API (google)
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error", <show error>
+        "type": "Internal Server Error", <show error>
     }
 ```
 
@@ -159,7 +159,7 @@ POST /currency : hit Currency API to generate Currency request on Client Side
 - Response 500: Internal server error
 ```json
     {
-        type: "Internal Server Error",
+        "type": "Internal Server Error",
     }
 ```
 
